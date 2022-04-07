@@ -44,7 +44,7 @@ export default defineComponent({
         state.data[index].y--;
       }
     };
-
+    //@ts-expect-error
     const chartDataNameUpdate = (e, index: number) => {
       state.data[index].name = e.target.value.trim();
     };

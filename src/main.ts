@@ -10,6 +10,7 @@ const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
+// @ts-expect-error
 app.use(HighchartsVue);
 
 app.mount('#app');
