@@ -1,6 +1,5 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive } from 'vue';
-// import Highcharts from 'highcharts';
 
 export interface SeriesData {
   name?: string;
@@ -9,9 +8,6 @@ export interface SeriesData {
 }
 
 export default defineComponent({
-  // components: {
-  //   highcharts: Highcharts,
-  // },
   props: {
     title: {
       type: String,
@@ -58,16 +54,6 @@ export default defineComponent({
       },
     });
 
-    // const chartValueIncrement = (index: number) => {
-    //   state.chartOptions.series[0].data[index].y++;
-    // };
-
-    // const chartValueDecrement = (index: number) => {
-    //   if (state.chartOptions.series[0].data[index].y > 0) {
-    //     state.chartOptions.series[0].data[index].y--;
-    //   }
-    // };
-
     return {
       state,
     };
@@ -76,30 +62,6 @@ export default defineComponent({
 </script>
 
 <template>
-  <!-- <div class="flex flex-col">
-    <div
-      v-for="(item, index) in state.chartOptions.series[0].data"
-      :key="item.name"
-      class="flex flex-row items-center"
-    >
-      <div class="w-32">{{ item.name }}</div>
-      <button
-        @click="chartValueDecrement(index)"
-        class="p-1 m-2 w-8 h-8 text-white font-bold bg-emerald-600"
-      >
-        -
-      </button>
-      <div class="w-12 text-center">
-        {{ state.chartOptions.series[0].data[index].y }}
-      </div>
-      <button
-        @click="chartValueIncrement(index)"
-        class="p-1 m-2 w-8 h-8 text-white font-bold bg-emerald-600"
-      >
-        +
-      </button>
-    </div>
-  </div> -->
   <div>
     <highcharts
       class="hc"
