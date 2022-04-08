@@ -9,15 +9,21 @@ export default defineComponent({
   },
   setup() {
     const state = reactive({
-      title: 'Булочек съедено всего',
+      title: {
+        text: 'Булочек съедено всего',
+      },
       data: [
         {
-          name: 'Кончита',
+          name: 'Вальдемар',
           y: 30,
         },
         {
-          name: 'Ануфрий',
+          name: 'Джессика',
           y: 20,
+        },
+        {
+          name: 'Леонардо',
+          y: 26,
         },
       ] as SeriesData[],
       name: 'Булочки',
@@ -49,6 +55,16 @@ export default defineComponent({
       state.data[index].name = e.target.value.trim();
     };
 
+    //@ts-expect-error
+    const chartTitleChange = (e) => {
+      state.title.text = e.target.value.trim();
+    };
+
+    //@ts-expect-error
+    const chartNameChange = (e) => {
+      state.name = e.target.value.trim();
+    };
+
     return {
       state,
       chartValueIncrement,
@@ -56,59 +72,87 @@ export default defineComponent({
       chartDataNameUpdate,
       chartDataAdd,
       chartDataDelete,
+      chartTitleChange,
+      chartNameChange,
     };
   },
 });
 </script>
 
 <template>
-  <div class="flex flex-col">
-    <div class="flex flex-col my-4">
-      <div
-        v-for="(item, index) in state.data"
-        :key="item.name"
-        class="flex flex-row items-center"
+  <div class="flex flex-col text-slate-700">
+    <div class="flex flex-row">
+      <div class="flex flex-col my-4 w-96">
+        <div class="flex flex-col items-start p-2">
+          <label for="chart-title" class="block text-left font-semibold"
+            >Заголовок</label
+          >
+          <input
+            id="chart-title"
+            :value="state.title.text"
+            @change="(e) => chartTitleChange(e)"
+            class="w-full px-2 py-1 rounded border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
+          />
+        </div>
+        <div class="flex flex-col items-start p-2">
+          <label for="series-name" class="block text-left font-semibold"
+            >Название</label
+          >
+          <input
+            id="series-name"
+            :value="state.name"
+            @change="(e) => chartNameChange(e)"
+            class="w-full px-2 py-1 rounded border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
+          />
+        </div>
+      </div>
+      <div class="flex flex-col my-4 mx-4">
+        <div
+          v-for="(item, index) in state.data"
+          :key="item.name"
+          class="flex flex-row items-center"
+        >
+          <div class="w-48">
+            <input
+              class="w-full px-2 py-1 rounded border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
+              :value="state.data[index].name"
+              @change="(e) => chartDataNameUpdate(e, index)"
+            />
+          </div>
+          <button
+            @click="chartValueDecrement(index)"
+            class="p-1 m-2 w-8 h-8 rounded text-white font-bold bg-emerald-600 hover:bg-emerald-500"
+          >
+            -
+          </button>
+          <div class="w-20 text-center">
+            <input
+              class="w-full px-2 py-1 rounded border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
+              v-model.number="state.data[index].y"
+            />
+          </div>
+          <button
+            @click="chartValueIncrement(index)"
+            class="p-1 m-2 w-8 h-8 rounded text-white font-bold bg-emerald-600 hover:bg-emerald-500"
+          >
+            +
+          </button>
+          <button
+            @click="chartDataDelete(index)"
+            class="py-1 px-2 text-red-600 font-semibold hover:text-red-700 hover:bg-red-100"
+          >
+            Удалить
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-row justify-center">
+      <button
+        @click="chartDataAdd"
+        class="bg-emerald-600 text-white rounded py-1 px-4 hover:bg-emerald-500"
       >
-        <div class="w-48">
-          <input
-            class="w-full border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
-            :value="state.data[index].name"
-            @change="(e) => chartDataNameUpdate(e, index)"
-          />
-        </div>
-        <button
-          @click="chartValueDecrement(index)"
-          class="p-1 m-2 w-8 h-8 text-white font-bold bg-emerald-600 hover:bg-emerald-500"
-        >
-          -
-        </button>
-        <div class="w-12 text-center">
-          <input
-            class="w-full border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
-            v-model.number="state.data[index].y"
-          />
-        </div>
-        <button
-          @click="chartValueIncrement(index)"
-          class="p-1 m-2 w-8 h-8 text-white font-bold bg-emerald-600 hover:bg-emerald-500"
-        >
-          +
-        </button>
-        <button
-          @click="chartDataDelete(index)"
-          class="py-1 px-2 text-red-600 font-semibold hover:text-red-700 hover:bg-red-100"
-        >
-          Удалить
-        </button>
-      </div>
-      <div class="flex flex-row justify-center">
-        <button
-          @click="chartDataAdd"
-          class="bg-emerald-600 text-white py-2 px-4 hover:bg-emerald-500"
-        >
-          Добавить сладкоежку
-        </button>
-      </div>
+        Добавить сладкоежку
+      </button>
     </div>
     <div>
       <ChartPieItem
