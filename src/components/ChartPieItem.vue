@@ -43,8 +43,6 @@ export default defineComponent({
   },
   setup(props) {
     const { name: nameRef, options: optionsRef } = toRefs(props);
-    const { labels: labelsRef, legend: legendRef } =
-      toRefs<ChartOptionsInterface>(props.options);
 
     const state = reactive({
       chartData: props.data,
@@ -90,14 +88,6 @@ export default defineComponent({
       );
     });
 
-    // const chartUpdateTitle = (title: string) => {
-    //   state.chartOptions.title.text = title;
-    // };
-
-    // const chartUpdateName = (name: string) => {
-    //   state.chartOptions.series[0].name = name;
-    // };
-
     onMounted(() => {
       if (props.data) {
         state.chartOptions.series[0].data = sortChartData(props.data);
@@ -105,12 +95,13 @@ export default defineComponent({
     });
 
     watch(
-      () => [labelsRef.value, legendRef.value],
-      ([labels, legend], [prevLabels, prevLegend]) => {
+      () => optionsRef.value,
+      (options, prevOptions) => {
         console.log('zatralen');
-        state.chartOptions.plotOptions.pie.dataLabels.enabled = labels;
-        state.chartOptions.plotOptions.pie.showInLegend = legend;
-      }
+        state.chartOptions.plotOptions.pie.dataLabels.enabled = options?.labels;
+        state.chartOptions.plotOptions.pie.showInLegend = options?.legend;
+      },
+      { deep: true }
     );
 
     watch(
