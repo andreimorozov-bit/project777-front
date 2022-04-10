@@ -23,6 +23,11 @@ export interface ChartTitleInterface {
   text: string;
 }
 
+export interface ChartOptionsInterface {
+  labels: boolean;
+  legend: boolean;
+}
+
 export default defineComponent({
   props: {
     title: {
@@ -34,8 +39,13 @@ export default defineComponent({
     data: {
       type: Array as () => Array<SeriesData>,
     },
+    options: Object as () => ChartOptionsInterface,
   },
   setup(props) {
+    const { name: nameRef, options: optionsRef } = toRefs(props);
+    const { labels: labelsRef, legend: legendRef } =
+      toRefs<ChartOptionsInterface>(props.options);
+
     const state = reactive({
       chartData: props.data,
       chartOptions: {
@@ -50,10 +60,10 @@ export default defineComponent({
           pie: {
             cursor: 'pointer',
             dataLabels: {
-              enabled: true,
+              enabled: props.options?.labels,
               format: '<b>{point.name}</b>: {point.y} ',
             },
-            showInLegend: false,
+            showInLegend: props.options?.legend,
           },
           series: {
             animation: false,
@@ -69,14 +79,16 @@ export default defineComponent({
       },
     });
 
-    const { name: nameRef } = toRefs(props);
-
-    // onUpdated(() => {
-    //   chartUpdateTitle(props.title || '');
-    //   console.log(props.title);
-    //   chartUpdateName(props.name || '');
-    //   console.log(props.name);
-    // });
+    onUpdated(() => {
+      console.log(`in props: ${props.options?.labels}`);
+      console.log(`in props: ${props.options?.legend}`);
+      console.log(
+        `in state: ${state.chartOptions.plotOptions.pie.dataLabels.enabled}`
+      );
+      console.log(
+        `in state: ${state.chartOptions.plotOptions.pie.showInLegend}`
+      );
+    });
 
     // const chartUpdateTitle = (title: string) => {
     //   state.chartOptions.title.text = title;
@@ -89,10 +101,17 @@ export default defineComponent({
     onMounted(() => {
       if (props.data) {
         state.chartOptions.series[0].data = sortChartData(props.data);
-        console.log(`in props: ${props.name}`);
-        console.log(`in state: ${state.chartOptions.series[0].name}`);
       }
     });
+
+    watch(
+      () => [labelsRef.value, legendRef.value],
+      ([labels, legend], [prevLabels, prevLegend]) => {
+        console.log('zatralen');
+        state.chartOptions.plotOptions.pie.dataLabels.enabled = labels;
+        state.chartOptions.plotOptions.pie.showInLegend = legend;
+      }
+    );
 
     watch(
       () => nameRef.value,

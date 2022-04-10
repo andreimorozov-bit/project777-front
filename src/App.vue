@@ -22,7 +22,7 @@ import { RouterLink, RouterView } from 'vue-router';
         </div>
       </nav>
     </header>
-    <div class="flex flex-col w-10/12 mx-auto">
+    <div class="flex flex-col w-full md:w-10/12 mx-auto">
       <RouterView />
     </div>
   </div>

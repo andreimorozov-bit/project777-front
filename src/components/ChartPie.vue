@@ -2,10 +2,24 @@
 import { defineComponent, reactive } from 'vue';
 import ChartPieItem from './ChartPieItem.vue';
 import type { SeriesData } from './ChartPieItem.vue';
+import BaseButtonMd from './BaseButtonMd.vue';
+import BaseButtonSquare from './BaseButtonSquare.vue';
+import BaseButtonSm from './BaseButtonSm.vue';
+import { Close, Plus, Minus } from 'mdue';
+import BaseButtonIconMd from './BaseButtonIconMd.vue';
+import BaseButtonSelectMd from './BaseButtonSelectMd.vue';
 
 export default defineComponent({
   components: {
     ChartPieItem,
+    BaseButtonMd,
+    BaseButtonSquare,
+    BaseButtonSm,
+    Close,
+    Plus,
+    Minus,
+    BaseButtonIconMd,
+    BaseButtonSelectMd,
   },
   setup() {
     const state = reactive({
@@ -27,6 +41,10 @@ export default defineComponent({
         },
       ] as SeriesData[],
       name: 'Булочки',
+      options: {
+        legend: false,
+        labels: true,
+      },
     });
 
     const chartDataAdd = () => {
@@ -65,6 +83,14 @@ export default defineComponent({
       state.name = e.target.value.trim();
     };
 
+    const chartLabelsToggle = () => {
+      state.options.labels = !state.options.labels;
+    };
+
+    const chartLegendToggle = () => {
+      state.options.legend = !state.options.legend;
+    };
+
     return {
       state,
       chartValueIncrement,
@@ -74,16 +100,18 @@ export default defineComponent({
       chartDataDelete,
       chartTitleChange,
       chartNameChange,
+      chartLabelsToggle,
+      chartLegendToggle,
     };
   },
 });
 </script>
 
 <template>
-  <div class="flex flex-col text-slate-700">
-    <div class="flex flex-row">
-      <div class="flex flex-col my-4 w-96">
-        <div class="flex flex-col items-start p-2">
+  <div class="flex flex-col w-full text-slate-700">
+    <div class="flex flex-col lg:flex-row flex-auto w-full">
+      <div class="flex flex-col flex-auto p-2 md:p-4 w-full lg:w-6/12">
+        <div class="flex flex-col items-start my-2 w-full">
           <label for="chart-title" class="block text-left font-semibold"
             >Заголовок</label
           >
@@ -94,7 +122,7 @@ export default defineComponent({
             class="w-full px-2 py-1 rounded border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
           />
         </div>
-        <div class="flex flex-col items-start p-2">
+        <div class="flex flex-col items-start w-full">
           <label for="series-name" class="block text-left font-semibold"
             >Название</label
           >
@@ -105,60 +133,87 @@ export default defineComponent({
             class="w-full px-2 py-1 rounded border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
           />
         </div>
+        <div class="flex flex-row py-2">
+          <div class="mr-2">
+            <BaseButtonSelectMd
+              type="filled"
+              :active="state.options.legend"
+              @click="chartLegendToggle"
+              >Легенда</BaseButtonSelectMd
+            >
+          </div>
+          <div class="mr-2">
+            <BaseButtonSelectMd
+              type="filled"
+              :active="state.options.labels"
+              @click="chartLabelsToggle"
+              >Ярлыки</BaseButtonSelectMd
+            >
+          </div>
+        </div>
       </div>
-      <div class="flex flex-col my-4 mx-4">
+      <div
+        class="flex flex-col flex-initial items-start p-2 md:p-4 w-full lg:w-6/12"
+      >
         <div
           v-for="(item, index) in state.data"
           :key="item.name"
-          class="flex flex-row items-center"
+          class="flex flex-row flex-none py-1 items-center w-full"
         >
-          <div class="w-48">
+          <div class="flex-auto px-0.5">
             <input
               class="w-full px-2 py-1 rounded border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
               :value="state.data[index].name"
               @change="(e) => chartDataNameUpdate(e, index)"
             />
           </div>
-          <button
-            @click="chartValueDecrement(index)"
-            class="p-1 m-2 w-8 h-8 rounded text-white font-bold bg-emerald-600 hover:bg-emerald-500"
-          >
-            -
-          </button>
-          <div class="w-20 text-center">
+
+          <div class="text-center flex-none px-0.5 w-20">
             <input
-              class="w-full px-2 py-1 rounded border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
+              class="w-full px-1 py-1 rounded border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
               v-model.number="state.data[index].y"
             />
           </div>
-          <button
-            @click="chartValueIncrement(index)"
-            class="p-1 m-2 w-8 h-8 rounded text-white font-bold bg-emerald-600 hover:bg-emerald-500"
-          >
-            +
-          </button>
-          <button
-            @click="chartDataDelete(index)"
-            class="py-1 px-2 text-red-600 font-semibold hover:text-red-700 hover:bg-red-100"
-          >
-            Удалить
-          </button>
+          <div class="flex flex-row flex-none px-0.5">
+            <div class="flex-none mr-1">
+              <BaseButtonIconMd
+                @click="chartValueDecrement(index)"
+                type="filled"
+                color="green"
+              >
+                <Minus class="text-xl" />
+              </BaseButtonIconMd>
+            </div>
+            <div class="flex-none">
+              <BaseButtonIconMd
+                @click="chartValueIncrement(index)"
+                type="filled"
+                color="green"
+              >
+                <Plus class="text-xl" />
+              </BaseButtonIconMd>
+            </div>
+          </div>
+          <div class="flex-none px-0.5">
+            <BaseButtonSm @click="chartDataDelete(index)" color="red">
+              Удалить
+            </BaseButtonSm>
+          </div>
+        </div>
+        <div class="flex flex-row p-1">
+          <BaseButtonMd color="blue" type="filled" @click="chartDataAdd">
+            Добавить сладкоежку
+          </BaseButtonMd>
         </div>
       </div>
     </div>
-    <div class="flex flex-row justify-center">
-      <button
-        @click="chartDataAdd"
-        class="bg-emerald-600 text-white rounded py-1 px-4 hover:bg-emerald-500"
-      >
-        Добавить сладкоежку
-      </button>
-    </div>
+
     <div>
       <ChartPieItem
         :title="state.title"
         :name="state.name"
         :data="state.data"
+        :options="state.options"
       />
     </div>
   </div>
