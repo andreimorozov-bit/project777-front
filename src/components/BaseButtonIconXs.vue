@@ -3,36 +3,46 @@ import { defineComponent, reactive } from 'vue';
 
 export interface BaseButtonMdPropsInterface {}
 
+export enum Color {
+  blue = 'blue',
+  green = 'green',
+  red = 'red',
+}
+
 export default defineComponent({
   props: {
     color: {
       type: String,
-      default: 'blue',
+      default: 'red',
     },
     type: {
       type: String,
-      default: 'filled',
+      default: 'text',
     },
   },
   setup(props) {
+    const state = reactive({
+      color: 'green',
+    });
+
     const getStylesFilled = (color: string) => {
       if (color === 'red') {
-        return `text-slate-400 border border-slate-300 bg-slate-100 hover:bg-rose-100 hover:text-rose-500 hover:border-rose-300`;
+        return `text-white bg-pink-600 hover:bg-pink-500 `;
       }
       if (color === 'green') {
-        return `text-slate-400 border border-slate-300 bg-slate-100 hover:bg-emerald-100 hover:text-emerald-500 hover:border-emerald-300`;
+        return `text-white bg-emerald-600 hover:bg-emerald-500 `;
       }
-      return `text-slate-400 border border-slate-300 bg-white hover:bg-sky-100 hover:text-sky-500 hover:border-sky-300 `;
+      return `text-white bg-sky-600 hover:bg-sky-500 `;
     };
 
     const getStylesText = (color: string) => {
       if (color === 'red') {
-        return `text-pink-600 bg-white hover:bg-pink-100 hover:text-pink-700 `;
+        return `text-slate-500 bg-white hover:bg-rose-100 hover:text-rose-600 `;
       }
       if (color === 'green') {
-        return `text-teal-600 bg-white hover:bg-emerald-100 hover:text-emerald-700 `;
+        return `text-slate-500 bg-white hover:bg-emerald-100 hover:text-emerald-700 `;
       }
-      return `text-sky-600 bg-white hover:bg-sky-100 hover:text-sky-700 `;
+      return `text-slate-500 bg-white hover:bg-sky-100 hover:text-sky-700 `;
     };
 
     const getStyles = (color: string, type: string) => {
@@ -44,6 +54,7 @@ export default defineComponent({
 
     return {
       getStyles,
+      state,
     };
   },
 });
@@ -51,7 +62,7 @@ export default defineComponent({
 
 <template>
   <button
-    class="flex flex-row flex-auto items-center justify-center text-center font-semibold rounded w-full h-[34px]"
+    class="flex flex-row justify-center items-center text-center font-semibold rounded-full w-[22px] h-[22px]"
     :class="getStyles(color, type)"
   >
     <slot></slot>

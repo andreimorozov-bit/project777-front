@@ -6,7 +6,7 @@ import BaseButtonMd from './BaseButtonMd.vue';
 import BaseButtonSquare from './BaseButtonSquare.vue';
 import BaseButtonSm from './BaseButtonSm.vue';
 import { Close, Plus, Minus } from 'mdue';
-import BaseButtonIconMd from './BaseButtonIconMd.vue';
+import BaseButtonIconSm from './BaseButtonIconSm.vue';
 import BaseButtonSelectMd from './BaseButtonSelectMd.vue';
 
 export default defineComponent({
@@ -18,7 +18,7 @@ export default defineComponent({
     Close,
     Plus,
     Minus,
-    BaseButtonIconMd,
+    BaseButtonIconSm,
     BaseButtonSelectMd,
   },
   setup() {
@@ -68,14 +68,13 @@ export default defineComponent({
         state.data[index].y--;
       }
     };
-    //@ts-expect-error
-    const chartDataNameUpdate = (e, index: number) => {
-      state.data[index].name = e.target.value.trim();
+
+    const chartDataNameUpdate = (e: Event, index: number) => {
+      state.data[index].name = (e.target as HTMLInputElement).value.trim();
     };
 
-    //@ts-expect-error
-    const chartTitleChange = (e) => {
-      state.title.text = e.target.value.trim();
+    const chartTitleChange = (e: Event) => {
+      state.title.text = (e.target as HTMLInputElement).value.trim();
     };
 
     //@ts-expect-error
@@ -160,7 +159,7 @@ export default defineComponent({
           :key="item.name"
           class="flex flex-row flex-none py-1 items-center w-full"
         >
-          <div class="flex-auto px-0.5">
+          <div class="flex-initial w-80 px-0.5">
             <input
               class="w-full px-2 py-1 rounded border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
               :value="state.data[index].name"
@@ -176,22 +175,22 @@ export default defineComponent({
           </div>
           <div class="flex flex-row flex-none px-0.5">
             <div class="flex-none mr-1">
-              <BaseButtonIconMd
+              <BaseButtonIconSm
                 @click="chartValueDecrement(index)"
                 type="filled"
                 color="green"
               >
                 <Minus class="text-xl" />
-              </BaseButtonIconMd>
+              </BaseButtonIconSm>
             </div>
             <div class="flex-none">
-              <BaseButtonIconMd
+              <BaseButtonIconSm
                 @click="chartValueIncrement(index)"
                 type="filled"
                 color="green"
               >
                 <Plus class="text-xl" />
-              </BaseButtonIconMd>
+              </BaseButtonIconSm>
             </div>
           </div>
           <div class="flex-none px-0.5">

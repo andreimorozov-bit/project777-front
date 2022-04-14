@@ -77,17 +77,6 @@ export default defineComponent({
       },
     });
 
-    onUpdated(() => {
-      console.log(`in props: ${props.options?.labels}`);
-      console.log(`in props: ${props.options?.legend}`);
-      console.log(
-        `in state: ${state.chartOptions.plotOptions.pie.dataLabels.enabled}`
-      );
-      console.log(
-        `in state: ${state.chartOptions.plotOptions.pie.showInLegend}`
-      );
-    });
-
     onMounted(() => {
       if (props.data) {
         state.chartOptions.series[0].data = sortChartData(props.data);
@@ -97,7 +86,6 @@ export default defineComponent({
     watch(
       () => optionsRef.value,
       (options, prevOptions) => {
-        console.log('zatralen');
         state.chartOptions.plotOptions.pie.dataLabels.enabled = options?.labels;
         state.chartOptions.plotOptions.pie.showInLegend = options?.legend;
       },

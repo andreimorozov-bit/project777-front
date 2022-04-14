@@ -1,19 +1,20 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
+import type { PropType } from 'vue';
 
 export interface BaseButtonMdPropsInterface {}
 
-export enum Color {
-  blue = 'blue',
-  green = 'green',
-  red = 'red',
+export class Color {
+  static blue = 'blue';
+  static green = 'green';
+  static red = 'red';
 }
 
 export default defineComponent({
   props: {
     color: {
       type: String,
-      default: 'blue',
+      default: Color.blue,
     },
     type: {
       type: String,
@@ -26,23 +27,23 @@ export default defineComponent({
     });
 
     const getStylesFilled = (color: string) => {
-      if (color === 'red') {
-        return `text-white bg-pink-600 hover:bg-pink-500 `;
+      if (color === Color.red) {
+        return `text-white bg-rose-600 hover:bg-rose-500 `;
       }
-      if (color === 'green') {
+      if (color === Color.green) {
         return `text-white bg-emerald-600 hover:bg-emerald-500 `;
       }
       return `text-white bg-sky-600 hover:bg-sky-500 `;
     };
 
     const getStylesText = (color: string) => {
-      if (color === 'red') {
-        return `text-pink-600 bg-white hover:bg-pink-100 hover:text-pink-700 `;
+      if (color === Color.red) {
+        return `text-slate-500 bg-white hover:bg-rose-100 hover:text-rose-600 `;
       }
-      if (color === 'green') {
-        return `text-emerald-600 bg-white hover:bg-emerald-100 hover:text-emerald-700 `;
+      if (color === Color.green) {
+        return `text-slate-500 bg-white hover:bg-emerald-100 hover:text-emerald-600 `;
       }
-      return `text-sky-600 bg-white hover:bg-sky-100 hover:text-sky-700 `;
+      return `text-slate-500 bg-white hover:bg-sky-100 hover:text-sky-600 `;
     };
 
     const getStyles = (color: string, type: string) => {
@@ -62,7 +63,7 @@ export default defineComponent({
 
 <template>
   <button
-    class="font-semibold rounded py-1 px-2"
+    class="flex flex-row justify-center items-center text-center font-semibold rounded w-[34px] h-[34px]"
     :class="getStyles(color, type)"
   >
     <slot></slot>
