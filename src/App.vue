@@ -9,15 +9,22 @@ import { RouterLink, RouterView } from 'vue-router';
         <div class="p-2">
           <RouterLink
             to="/"
-            class="text-xl font-semibold text-slate-700 hover:text-slate-500"
+            class="text-xl font-semibold text-slate-500 hover:text-sky-600"
             >Pie</RouterLink
           >
         </div>
         <div class="p-2">
           <RouterLink
-            to="/chartcolumn"
-            class="text-xl font-semibold text-slate-700 hover:text-slate-500"
+            to="/chart-column"
+            class="text-xl font-semibold text-slate-500 hover:text-sky-600"
             >Column</RouterLink
+          >
+        </div>
+        <div class="p-2">
+          <RouterLink
+            to="/chart-polar-line"
+            class="text-xl font-semibold text-slate-500 hover:text-sky-600"
+            >Polar Line</RouterLink
           >
         </div>
       </nav>

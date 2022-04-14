@@ -12,6 +12,7 @@ import BaseButtonIconMd from './BaseButtonIconMd.vue';
 import BaseButtonIconXs from './BaseButtonIconXs.vue';
 import BaseInputMd from './BaseInputMd.vue';
 import BaseInputLabelMd from './BaseInputLabelMd.vue';
+import ChartPolarLineItem from './ChartPolarLineItem.vue';
 
 export default defineComponent({
   components: {
@@ -29,33 +30,55 @@ export default defineComponent({
     BaseButtonIconXs,
     BaseInputMd,
     BaseInputLabelMd,
+    ChartPolarLineItem,
   },
   setup() {
     const state = reactive({
       options: {
         title: {
-          text: 'Булочек съедено по годам',
+          text: 'Потребление булочек по типам',
+        },
+        tooltip: {
+          shared: true,
+          pointFormat: '{series.name}: {point.y:.1f}',
         },
         xAxis: {
-          categories: ['2019', '2020', '2021'],
+          categories: [
+            'Пончики',
+            'Маффины',
+            'Вафельки',
+            'Печеньки',
+            'С маком',
+            'С вишенкой',
+          ],
+          tickmarkPlacement: 'on',
+          lineWidth: 0,
         },
         yAxis: {
-          title: {
-            text: 'Булочки',
+          gridLineInterpolation: 'polygon',
+          lineWidth: 0,
+          min: 0,
+        },
+        plotOptions: {
+          series: {
+            animation: false,
           },
         },
         series: [
           {
             name: 'Вальдемар',
-            data: [50, 55, 70],
+            data: [50, 40, 45, 10, 20, 10],
+            pointPlacement: 'on',
           },
           {
             name: 'Джессика',
-            data: [20, 30, 19],
+            data: [30, 60, 70, 40, 30, 15],
+            pointPlacement: 'on',
           },
           {
             name: 'Леонардо',
-            data: [10, 15, 20],
+            data: [20, 30, 50, 15, 40, 20],
+            pointPlacement: 'on',
           },
         ],
       },
@@ -73,6 +96,7 @@ export default defineComponent({
       const newItem = {
         name: `Сладкоежка ${state.options.series.length + 1}`,
         data: new Array<number>(state.options.xAxis.categories.length).fill(0),
+        pointPlacement: 'on',
       };
       state.options.series.push(newItem);
     };
@@ -91,10 +115,9 @@ export default defineComponent({
       state.options.title.text = (e.target as HTMLInputElement).value.trim();
     };
 
-    //@ts-expect-error
-    const chartNameChange = (e) => {
-      state.options.yAxis.title.text = e.target.value.trim();
-    };
+    // const chartNameChange = (e) => {
+    //   state.options.yAxis.title.text = e.target.value.trim();
+    // };
 
     const categoryAdd = () => {
       state.options.xAxis.categories.push('');
@@ -174,7 +197,6 @@ export default defineComponent({
       chartSerieAdd,
       chartSerieDelete,
       chartTitleChange,
-      chartNameChange,
       categoryAdd,
       categoryDelete,
       getColor,
@@ -203,17 +225,6 @@ export default defineComponent({
             id="chart-title"
             :value="state.options.title.text"
             @change="(e) => chartTitleChange(e)"
-            class="w-full px-2 py-1 rounded border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
-          />
-        </div>
-        <div class="flex flex-col items-start">
-          <label for="series-name" class="block text-left font-semibold"
-            >Название</label
-          >
-          <input
-            id="series-name"
-            :value="state.options.yAxis.title.text"
-            @change="(e) => chartNameChange(e)"
             class="w-full px-2 py-1 rounded border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
           />
         </div>
@@ -314,7 +325,7 @@ export default defineComponent({
     </div>
 
     <div>
-      <ChartColumnItem :options="state.options" />
+      <ChartPolarLineItem :options="state.options" />
     </div>
   </div>
 </template>

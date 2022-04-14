@@ -1,16 +1,11 @@
 <script lang="ts">
-import {
-  defineComponent,
-  onMounted,
-  onUpdated,
-  reactive,
-  toRef,
-  toRefs,
-  watch,
-} from 'vue';
+import { defineComponent, reactive } from 'vue';
 import type { PropType } from 'vue';
 import Highcharts from 'highcharts';
 import exportingInit from 'highcharts/modules/exporting';
+import highchartsMore from 'highcharts/highcharts-more';
+
+highchartsMore(Highcharts);
 
 exportingInit(Highcharts);
 
@@ -23,14 +18,18 @@ export interface XAxisInterface {
 }
 
 export interface YAxisInterface {
-  title: {
+  title?: {
     text: string;
   };
+  gridLineInterpolation: string;
+  lineWidth: number;
+  min: number;
 }
 
 export interface SeriesInterface {
   name: string;
   data: Array<number>;
+  pointPlacement?: string | undefined;
 }
 
 export interface OptionsInterface {
@@ -49,19 +48,24 @@ export default defineComponent({
       chartData: props.options,
       chartOptions: {
         chart: {
-          type: 'column',
+          polar: true,
         },
         title: props.options?.title,
+        pane: {
+          size: '100%',
+        },
         tooltip: {
-          pointFormat: '{series.name}: {point.y:.1f}',
+          shared: true,
+          pointFormat:
+            '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>',
         },
         xAxis: props.options?.xAxis,
-        yAxis: props.options?.yAxis,
+        yAxis: {
+          gridLineInterpolation: 'polygon',
+          lineWidth: 0,
+          min: 0,
+        },
         plotOptions: {
-          column: {
-            pointPadding: 0.1,
-            borderWidth: 0,
-          },
           series: {
             animation: false,
           },
