@@ -1,6 +1,7 @@
 import ChartPolarLine from '@/components/ChartPolarLine.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import ChartPieView from '../views/ChartPieView.vue';
+import ChartLineView from '../views/ChartLineView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,6 +11,7 @@ const router = createRouter({
       name: 'chartPie',
       component: ChartPieView,
     },
+
     {
       path: '/chart-column',
       name: 'chartColumn',
@@ -17,6 +19,11 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/ChartColumnView.vue'),
+    },
+    {
+      path: '/chart-line',
+      name: 'chartLine',
+      component: ChartLineView,
     },
     {
       path: '/chart-polar-line',

@@ -37,7 +37,6 @@ export default defineComponent({
     };
 
     const getLabelClass = computed<string>(() => {
-      console.log(props.color);
       if (state.focus) {
         if (props.color === 'red') {
           return `font-semibold text-rose-600`;

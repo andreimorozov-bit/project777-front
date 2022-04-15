@@ -21,8 +21,6 @@ export interface YAxisInterface {
   title?: {
     text: string;
   };
-  gridLineInterpolation: string;
-  lineWidth: number;
   min: number;
   max?: number;
 }
@@ -49,12 +47,9 @@ export default defineComponent({
       chartData: props.options,
       chartOptions: {
         chart: {
-          polar: true,
+          type: 'line',
         },
         title: props.options?.title,
-        pane: {
-          size: '90%',
-        },
         tooltip: {
           shared: true,
           pointFormat:
@@ -68,31 +63,11 @@ export default defineComponent({
           },
         },
         legend: {
-          align: 'right',
-          verticalAlign: 'middle',
-          layout: 'vertical',
+          align: 'center',
+          verticalAlign: 'bottom',
+          layout: 'horizontal',
         },
         series: props.options?.series,
-
-        responsive: {
-          rules: [
-            {
-              condition: {
-                maxWidth: 600,
-              },
-              chartOptions: {
-                legend: {
-                  align: 'center',
-                  verticalAlign: 'bottom',
-                  layout: 'horizontal',
-                },
-                pane: {
-                  size: '80%',
-                },
-              },
-            },
-          ],
-        },
       },
     });
 
@@ -104,7 +79,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="my-6 max-w-[700px]">
+  <div class="my-6">
     <highcharts :options="state.chartOptions" ref="chart"></highcharts>
   </div>
 </template>

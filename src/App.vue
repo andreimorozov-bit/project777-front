@@ -22,6 +22,13 @@ import { RouterLink, RouterView } from 'vue-router';
         </div>
         <div class="p-2">
           <RouterLink
+            to="/chart-line"
+            class="text-xl font-semibold text-slate-500 hover:text-sky-600"
+            >Line</RouterLink
+          >
+        </div>
+        <div class="p-2">
+          <RouterLink
             to="/chart-polar-line"
             class="text-xl font-semibold text-slate-500 hover:text-sky-600"
             >Polar Line</RouterLink
