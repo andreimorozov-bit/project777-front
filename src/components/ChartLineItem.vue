@@ -21,7 +21,7 @@ export interface YAxisInterface {
   title?: {
     text: string;
   };
-  min: number;
+  min?: number;
   max?: number;
 }
 
@@ -50,11 +50,7 @@ export default defineComponent({
           type: 'line',
         },
         title: props.options?.title,
-        tooltip: {
-          shared: true,
-          pointFormat:
-            '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>',
-        },
+
         xAxis: props.options?.xAxis,
         yAxis: props.options?.yAxis,
         plotOptions: {
