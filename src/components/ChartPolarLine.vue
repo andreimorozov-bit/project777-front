@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, onBeforeMount, reactive, watch } from 'vue';
 import ChartPieItem from './ChartPieItem.vue';
 import BaseButtonMd from './BaseButtonMd.vue';
 import BaseButtonSquare from './BaseButtonSquare.vue';
@@ -13,6 +13,9 @@ import BaseButtonIconXs from './BaseButtonIconXs.vue';
 import BaseInputMd from './BaseInputMd.vue';
 import BaseInputLabelMd from './BaseInputLabelMd.vue';
 import ChartPolarLineItem from './ChartPolarLineItem.vue';
+import BaseInputLabelLg from './BaseInputLabelLg.vue';
+import { useConfigStore } from '@/stores/config';
+import { getChartColors } from '@/common/chartColors';
 
 export default defineComponent({
   components: {
@@ -31,12 +34,23 @@ export default defineComponent({
     BaseInputMd,
     BaseInputLabelMd,
     ChartPolarLineItem,
+    BaseInputLabelLg,
   },
   setup() {
     const state = reactive({
       options: {
         title: {
           text: 'Потребление булочек по типам',
+        },
+        chart: {
+          polar: true,
+          type: 'line',
+          spacingRight: 20,
+        },
+        legend: {
+          align: 'right',
+          verticalAlign: 'middle',
+          layout: 'vertical',
         },
         tooltip: {
           shared: true,
@@ -59,6 +73,7 @@ export default defineComponent({
           lineWidth: 0,
           min: 0,
           tickPixelInterval: 10,
+          title: {},
         },
         plotOptions: {
           series: {
@@ -91,7 +106,25 @@ export default defineComponent({
         category: -1,
         serie: -1,
       },
+      someKey: 1,
     });
+
+    const configStore = useConfigStore();
+
+    onBeforeMount(() => {
+      state.options = getChartColors(state.options, configStore.dark);
+    });
+
+    watch(
+      configStore,
+      (dark, prevDark) => {
+        state.options = getChartColors(state.options, configStore.dark);
+        state.someKey += 1;
+      },
+      {
+        deep: true,
+      }
+    );
 
     const chartSerieAdd = () => {
       const newItem = {
@@ -213,21 +246,18 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="flex flex-col w-full text-slate-700">
+  <div class="flex flex-col w-full text-slate-700 dark:text-slate-400">
     <div class="flex flex-col lg:flex-row flex-auto w-full">
       <div
         class="flex flex-col flex-auto p-2 md:p-4 w-full lg:w-5/12 max-w-[30rem]"
       >
         <div class="flex flex-col items-start my-2">
-          <label for="chart-title" class="block text-left font-semibold"
-            >Заголовок</label
-          >
-          <input
-            id="chart-title"
-            :value="state.options.title.text"
-            @change="(e) => chartTitleChange(e)"
-            class="w-full px-2 py-1 rounded border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
-          />
+          <div class="flex-auto w-full min-w-[18rem] max-w-[34rem]">
+            <BaseInputLabelLg
+              label="Заголовок"
+              v-model="state.options.title.text"
+            />
+          </div>
         </div>
       </div>
       <div class="flex flex-row p-2 md:p-4"></div>
@@ -326,7 +356,11 @@ export default defineComponent({
     </div>
 
     <div>
-      <ChartPolarLineItem :options="state.options" />
+      <ChartPolarLineItem
+        :options="state.options"
+        :key="state.someKey"
+        ref="chart"
+      />
     </div>
   </div>
 </template>

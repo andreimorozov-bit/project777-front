@@ -7,114 +7,163 @@ import {
   toRef,
   toRefs,
   watch,
+  type PropType,
 } from 'vue';
 import Highcharts from 'highcharts';
 import exportingInit from 'highcharts/modules/exporting';
 
 exportingInit(Highcharts);
 
-export interface SeriesData {
-  name?: string;
-  y: number;
-  color?: string;
-}
-
-export interface ChartTitleInterface {
+export interface TitleInterface {
   text: string;
+  style?: {
+    color?: string;
+  };
 }
 
-export interface ChartOptionsInterface {
-  labels: boolean;
-  legend: boolean;
+export interface XAxisInterface {
+  categories: Array<string>;
+  labels?: {
+    style: {
+      color: string;
+      cursor: string;
+      fontSize: string;
+    };
+  };
+}
+
+export interface ChartInterface {
+  type?: string;
+  backgroundColor?: string;
+  width?: number | string;
+  spacingRight: number;
+  marginRight: number;
+}
+
+export interface YAxisInterface {
+  title?: {
+    text: string;
+    style?: {
+      color?: string;
+    };
+  };
+  labels?: {
+    style: {
+      color: string;
+      cursor: string;
+      fontSize: string;
+    };
+  };
+  min?: number;
+  max?: number;
+  gridLineColor?: string;
+}
+
+export interface LegendInterface {
+  align?: string;
+  verticalAlign?: string;
+  layout?: string;
+  itemHiddenStyle?: {
+    color?: string;
+  };
+}
+
+export interface SeriesDataInterface {
+  name: string;
+  y: number;
+}
+
+export interface SeriesInterface {
+  name: string;
+  data: Array<SeriesDataInterface>;
+  pointPlacement?: string | undefined;
+}
+
+export interface PlotOptionsinterface {
+  pie?: {
+    allowPointSelect?: boolean;
+    cursor?: string;
+    dataLabels?: {
+      enabled?: boolean;
+      format?: string;
+      color?: string;
+      style?: {
+        textOutline?: string;
+        color?: string;
+      };
+    };
+  };
+  series?: {
+    animation?: boolean;
+  };
+}
+
+export interface OptionsInterface {
+  chart: ChartInterface;
+  legend: LegendInterface;
+  colors: string[];
+  title: TitleInterface;
+  series: Array<SeriesInterface>;
+  plotOptions: PlotOptionsinterface;
 }
 
 export default defineComponent({
   props: {
-    title: {
-      type: Object as () => ChartTitleInterface,
-    },
-    name: {
-      type: String,
-    },
-    data: {
-      type: Array as () => Array<SeriesData>,
-    },
-    options: Object as () => ChartOptionsInterface,
+    options: Object as PropType<OptionsInterface>,
   },
   setup(props) {
-    const { name: nameRef, options: optionsRef } = toRefs(props);
-
     const state = reactive({
-      chartData: props.data,
+      chartData: props.options,
+      chartWidth: ' w-full',
       chartOptions: {
-        chart: {
-          type: 'pie',
-        },
-        title: props.title,
-        tooltip: {
-          pointFormat: '{series.name}: {point.percentage:.1f}%',
-        },
-        plotOptions: {
-          pie: {
-            cursor: 'pointer',
-            dataLabels: {
-              enabled: props.options?.labels,
-              format: '<b>{point.name}</b>: {point.y} ',
-            },
-            showInLegend: props.options?.legend,
-          },
-          series: {
-            animation: false,
-          },
-        },
-        series: [
-          {
-            name: props.name,
-            colorByPoint: true,
-            data: [] as SeriesData[],
-          },
-        ],
+        chart: props.options?.chart,
+        title: props.options?.title,
+        colors: props.options?.colors,
+        plotOptions: props.options?.plotOptions,
+        legend: props.options?.legend,
+        series: props.options?.series,
       },
+      someKey: 1,
     });
 
-    onMounted(() => {
-      if (props.data) {
-        state.chartOptions.series[0].data = sortChartData(props.data);
-      }
-    });
+    // onMounted(() => {
+    //   if (props.data) {
+    //     state.chartOptions.series[0].data = sortChartData(props.data);
+    //   }
+    // });
 
-    watch(
-      () => optionsRef.value,
-      (options, prevOptions) => {
-        state.chartOptions.plotOptions.pie.dataLabels.enabled = options?.labels;
-        state.chartOptions.plotOptions.pie.showInLegend = options?.legend;
-      },
-      { deep: true }
-    );
+    // watch(
+    //   () => optionsRef.value,
+    //   (options, prevOptions) => {
+    //     state.chartOptions.plotOptions.pie.dataLabels.enabled = options?.labels;
+    //     state.chartOptions.plotOptions.pie.showInLegend = options?.legend;
+    //   },
+    //   { deep: true }
+    // );
 
-    watch(
-      () => nameRef.value,
-      (name, prevName) => {
-        state.chartOptions.series[0].name = name;
-      }
-    );
+    // watch(
+    //   () => nameRef.value,
+    //   (name, prevName) => {
+    //     state.chartOptions.series[0].name = name;
+    //   }
+    // );
 
-    watch(
-      () => state.chartData,
-      (data, prevData) => {
-        if (data) {
-          state.chartOptions.series[0].data = sortChartData(data);
-        }
-      },
-      { deep: true }
-    );
+    // watch(
+    //   () => state.chartData,
+    //   (data, prevData) => {
+    //     if (data) {
+    //       state.chartOptions.series[0].data = sortChartData(data);
+    //     }
+    //   },
+    //   { deep: true }
+    // );
 
-    const sortChartData = (data: SeriesData[]): SeriesData[] => {
-      const newData = new Array(...data);
-      return newData.sort((a, b) => {
-        return b.y - a.y;
-      });
-    };
+    // const sortChartData = (data: SeriesData[]): SeriesData[] => {
+    //   const newData = new Array(...data);
+    //   return newData.sort((a, b) => {
+    //     return b.y - a.y;
+    //   });
+    // };
 
     return {
       state,

@@ -38,12 +38,12 @@ export default defineComponent({
 
     const getStylesText = (color: string) => {
       if (color === Color.red) {
-        return `text-slate-500 bg-white hover:bg-rose-100 hover:text-rose-600 `;
+        return `text-slate-500 bg-white hover:bg-rose-100 hover:text-rose-500 dark:bg-slate-900`;
       }
       if (color === Color.green) {
         return `text-slate-500 bg-white hover:bg-emerald-100 hover:text-emerald-600 `;
       }
-      return `text-slate-500 bg-white hover:bg-sky-100 hover:text-sky-600 `;
+      return `text-slate-500 bg-white hover:bg-sky-100 hover:text-sky-600 dark:bg-slate-900 dark:text-slate-400 dark:hover:text-sky-400 dark:hover:bg-slate-800`;
     };
 
     const getStyles = (color: string, type: string) => {

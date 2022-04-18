@@ -1,5 +1,12 @@
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import {
+  defineComponent,
+  onBeforeMount,
+  onMounted,
+  reactive,
+  ref,
+  watch,
+} from 'vue';
 import ChartPieItem from './ChartPieItem.vue';
 import BaseButtonMd from './BaseButtonMd.vue';
 import BaseButtonSquare from './BaseButtonSquare.vue';
@@ -13,6 +20,9 @@ import BaseButtonIconXs from './BaseButtonIconXs.vue';
 import BaseInputMd from './BaseInputMd.vue';
 import BaseInputLabelMd from './BaseInputLabelMd.vue';
 import ChartLineItem from './ChartLineItem.vue';
+import { useConfigStore } from '@/stores/config';
+import BaseInputLabelLg from './BaseInputLabelLg.vue';
+import { getChartColors } from '../common/chartColors';
 
 export default defineComponent({
   components: {
@@ -31,6 +41,7 @@ export default defineComponent({
     BaseInputMd,
     BaseInputLabelMd,
     ChartLineItem,
+    BaseInputLabelLg,
   },
   setup() {
     const state = reactive({
@@ -38,10 +49,32 @@ export default defineComponent({
         title: {
           text: 'Потребление булочек за 2021 год',
         },
+        colors: [
+          '#7cb5ec',
+          '#dddddd',
+          '#90ed7d',
+          '#f7a35c',
+          '#8085e9',
+          '#f15c80',
+          '#e4d354',
+          '#2b908f',
+          '#f45b5b',
+          '#91e8e1',
+        ],
+        chart: {
+          type: 'line',
+          spacingRight: 20,
+          marginRight: 0,
+        },
         tooltip: {
           shared: true,
           pointFormat:
             '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>',
+        },
+        legend: {
+          align: 'center',
+          verticalAlign: 'bottom',
+          layout: 'horizontal',
         },
         xAxis: {
           categories: [
@@ -84,6 +117,7 @@ export default defineComponent({
           },
         ],
       },
+      darkMode: false,
       hovered: {
         category: -1,
         serie: -1,
@@ -92,7 +126,32 @@ export default defineComponent({
         category: -1,
         serie: -1,
       },
+      someKey: 1,
+      chartWidth: 'w-full',
     });
+
+    const configStore = useConfigStore();
+
+    onBeforeMount(() => {
+      state.options = getChartColors(state.options, configStore.dark);
+    });
+
+    // onMounted(() => {
+    //   console.log(chartContainerRef.value);
+    //   //@ts-ignore
+    //   state.options.chart.width = chartContainerRef.value.clientWidth;
+    // });
+
+    watch(
+      configStore,
+      (dark, prevDark) => {
+        state.options = getChartColors(state.options, configStore.dark);
+        state.someKey += 1;
+      },
+      {
+        deep: true,
+      }
+    );
 
     const chartSerieAdd = () => {
       const newItem = {
@@ -217,31 +276,23 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="flex flex-col w-full text-slate-700">
+  <div class="flex flex-col w-full text-slate-700 dark:text-slate-400">
     <div class="flex flex-col lg:flex-row flex-auto w-full">
       <div
         class="flex flex-col flex-auto p-2 md:p-4 w-full lg:w-5/12 max-w-[30rem]"
       >
         <div class="flex flex-col items-start my-2">
-          <label for="chart-title" class="block text-left font-semibold"
-            >Заголовок</label
-          >
-          <input
-            id="chart-title"
-            :value="state.options.title.text"
-            @change="(e) => chartTitleChange(e)"
-            class="w-full px-2 py-1 rounded border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
-          />
+          <div class="flex-auto w-full min-w-[18rem] max-w-[34rem]">
+            <BaseInputLabelLg
+              label="Заголовок"
+              v-model="state.options.title.text"
+            />
+          </div>
         </div>
         <div class="flex flex-col items-start">
-          <label for="series-name" class="block text-left font-semibold"
-            >Название</label
-          >
-          <input
-            id="series-name"
-            :value="state.options.yAxis.title.text"
-            @change="(e) => chartNameChange(e)"
-            class="w-full px-2 py-1 rounded border border-slate-300 focus:outline-none focus:border-sky-600 focus:bg-sky-50"
+          <BaseInputLabelLg
+            label="Название"
+            v-model="state.options.yAxis.title.text"
           />
         </div>
       </div>
@@ -251,7 +302,9 @@ export default defineComponent({
       <div
         class="flex flex-row flex-initial flex-wrap py-1 justify-start items-end w-auto"
       >
-        <div class="px-2 pb-2 self-end font-semibold">Группы</div>
+        <div class="px-2 pb-2 self-end font-semibold dark:text-slate-400">
+          Группы
+        </div>
         <div
           v-for="(category, categoryIndex) in state.options.xAxis.categories"
           class="flex flex-col text-center flex-none p-0.5 w-20"
@@ -341,7 +394,11 @@ export default defineComponent({
     </div>
 
     <div>
-      <ChartLineItem :options="state.options" />
+      <ChartLineItem
+        :options="state.options"
+        :chartWidth="state.chartWidth"
+        :key="state.someKey"
+      />
     </div>
   </div>
 </template>

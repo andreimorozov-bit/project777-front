@@ -11,20 +11,73 @@ exportingInit(Highcharts);
 
 export interface TitleInterface {
   text: string;
+  style?: {
+    color?: string;
+  };
 }
 
 export interface XAxisInterface {
   categories: Array<string>;
+  labels?: {
+    style: {
+      color: string;
+      cursor: string;
+      fontSize: string;
+    };
+  };
+}
+
+export interface ChartInterface {
+  type?: string;
+  backgroundColor?: string;
+  spacingRight: number;
 }
 
 export interface YAxisInterface {
   title?: {
-    text: string;
+    text?: string;
+    style?: {
+      color?: string;
+    };
   };
-  gridLineInterpolation: string;
-  lineWidth: number;
-  min: number;
+  labels?: {
+    style: {
+      color: string;
+      cursor: string;
+      fontSize: string;
+    };
+  };
+  min?: number;
   max?: number;
+  gridLineColor?: string;
+}
+
+export interface LegendInterface {
+  align?: string;
+  verticalAlign?: string;
+  layout?: string;
+  itemHiddenStyle?: {
+    color?: string;
+  };
+}
+
+export interface PlotOptionsinterface {
+  pie?: {
+    allowPointSelect?: boolean;
+    cursor?: string;
+    dataLabels?: {
+      enabled?: boolean;
+      format?: string;
+      color?: string;
+      style?: {
+        textOutline?: string;
+        color?: string;
+      };
+    };
+  };
+  series?: {
+    animation?: boolean;
+  };
 }
 
 export interface SeriesInterface {
@@ -34,9 +87,13 @@ export interface SeriesInterface {
 }
 
 export interface OptionsInterface {
+  chart: ChartInterface;
+  legend: LegendInterface;
+  colors?: string[];
   title: TitleInterface;
   xAxis: XAxisInterface;
   yAxis: YAxisInterface;
+  plotOptions: PlotOptionsinterface;
   series: Array<SeriesInterface>;
 }
 
@@ -48,10 +105,9 @@ export default defineComponent({
     const state = reactive({
       chartData: props.options,
       chartOptions: {
-        chart: {
-          polar: true,
-        },
+        chart: props.options?.chart,
         title: props.options?.title,
+        colors: props.options?.colors,
         pane: {
           size: '90%',
         },
@@ -67,13 +123,8 @@ export default defineComponent({
             animation: false,
           },
         },
-        legend: {
-          align: 'right',
-          verticalAlign: 'middle',
-          layout: 'vertical',
-        },
+        legend: props.options?.legend,
         series: props.options?.series,
-
         responsive: {
           rules: [
             {

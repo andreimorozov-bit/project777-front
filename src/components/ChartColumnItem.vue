@@ -16,27 +16,89 @@ exportingInit(Highcharts);
 
 export interface TitleInterface {
   text: string;
+  style?: {
+    color?: string;
+  };
 }
 
 export interface XAxisInterface {
   categories: Array<string>;
+  labels?: {
+    style: {
+      color: string;
+      cursor: string;
+      fontSize: string;
+    };
+  };
+}
+
+export interface ChartInterface {
+  type?: string;
+  backgroundColor?: string;
+  spacingRight: number;
 }
 
 export interface YAxisInterface {
-  title: {
+  title?: {
     text: string;
+    style?: {
+      color?: string;
+    };
+  };
+  labels?: {
+    style: {
+      color: string;
+      cursor: string;
+      fontSize: string;
+    };
+  };
+  min?: number;
+  max?: number;
+  gridLineColor?: string;
+}
+
+export interface LegendInterface {
+  align?: string;
+  verticalAlign?: string;
+  layout?: string;
+  itemHiddenStyle?: {
+    color?: string;
+  };
+}
+
+export interface PlotOptionsinterface {
+  pie?: {
+    allowPointSelect?: boolean;
+    cursor?: string;
+    dataLabels?: {
+      enabled?: boolean;
+      format?: string;
+      color?: string;
+      style?: {
+        textOutline?: string;
+        color?: string;
+      };
+    };
+  };
+  series?: {
+    animation?: boolean;
   };
 }
 
 export interface SeriesInterface {
   name: string;
   data: Array<number>;
+  pointPlacement?: string | undefined;
 }
 
 export interface OptionsInterface {
+  chart: ChartInterface;
+  legend: LegendInterface;
+  colors?: string[];
   title: TitleInterface;
   xAxis: XAxisInterface;
   yAxis: YAxisInterface;
+  plotOptions: PlotOptionsinterface;
   series: Array<SeriesInterface>;
 }
 
@@ -48,24 +110,17 @@ export default defineComponent({
     const state = reactive({
       chartData: props.options,
       chartOptions: {
-        chart: {
-          type: 'column',
-        },
+        chart: props.options?.chart,
         title: props.options?.title,
-        tooltip: {
-          pointFormat: '{series.name}: {point.y:.1f}',
-        },
+        colors: props.options?.colors,
         xAxis: props.options?.xAxis,
         yAxis: props.options?.yAxis,
         plotOptions: {
-          column: {
-            pointPadding: 0.1,
-            borderWidth: 0,
-          },
           series: {
             animation: false,
           },
         },
+        legend: props.options?.legend,
         series: props.options?.series,
       },
     });

@@ -22,7 +22,7 @@ export default defineComponent({
       if (color === 'green') {
         return `text-slate-400 border border-slate-300 bg-slate-100 hover:bg-emerald-100 hover:text-emerald-500 hover:border-emerald-300`;
       }
-      return `text-slate-400 border border-slate-300 bg-white hover:bg-sky-100 hover:text-sky-500 hover:border-sky-300 `;
+      return `text-slate-400 border border-slate-300 bg-white hover:bg-sky-100 hover:text-sky-500 hover:border-sky-300 dark:bg-slate-900 dark:text-slate-500 dark:border-slate-700 dark:hover:border-sky-500 dark:hover:bg-slate-800 dark:hover:text-sky-500`;
     };
 
     const getStylesText = (color: string) => {

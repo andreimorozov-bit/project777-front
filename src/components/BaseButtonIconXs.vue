@@ -27,7 +27,7 @@ export default defineComponent({
 
     const getStylesFilled = (color: string) => {
       if (color === 'red') {
-        return `text-white bg-pink-600 hover:bg-pink-500 `;
+        return `text-white bg-pink-600 hover:bg-pink-500`;
       }
       if (color === 'green') {
         return `text-white bg-emerald-600 hover:bg-emerald-500 `;
@@ -37,7 +37,7 @@ export default defineComponent({
 
     const getStylesText = (color: string) => {
       if (color === 'red') {
-        return `text-slate-500 bg-white hover:bg-rose-100 hover:text-rose-600 `;
+        return `text-slate-500 bg-white hover:bg-rose-100 hover:text-rose-600 dark:text-slate-500 dark:bg-slate-900 dark:hover:text-rose-500 dark:hover:bg-slate-800`;
       }
       if (color === 'green') {
         return `text-slate-500 bg-white hover:bg-emerald-100 hover:text-emerald-700 `;

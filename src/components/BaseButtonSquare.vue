@@ -38,7 +38,7 @@ export default defineComponent({
 
     const getStylesText = (color: string) => {
       if (color === 'red') {
-        return `text-pink-600 bg-white hover:bg-pink-100 hover:text-pink-500 `;
+        return `text-pink-600 bg-white hover:bg-pink-100 hover:text-pink-500`;
       }
       if (color === 'green') {
         return `text-emerald-600 bg-white hover:bg-emerald-50 hover:text-emerald-500 `;

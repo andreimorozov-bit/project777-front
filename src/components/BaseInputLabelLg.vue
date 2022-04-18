@@ -33,7 +33,7 @@ export default defineComponent({
       if (color === 'green') {
         return `border-emerald-300 bg-emerald-100 focus:border-emerald-600 focus:bg-emerald-200  `;
       }
-      return `border-slate-300 focus:border-sky-600 focus:bg-sky-100 dark:bg-slate-900 dark:border-slate-700 dark:focus:border-sky-900 dark:focus:bg-gray-900`;
+      return `border-slate-300 focus:border-sky-600 focus:bg-sky-100 dark:bg-slate-900 dark:border-slate-700 dark:focus:border-sky-500 dark:focus:bg-slate-800`;
     };
 
     const getLabelClass = computed<string>(() => {
@@ -44,7 +44,7 @@ export default defineComponent({
         if (props.color === 'green') {
           return `font-semibold text-emerald-600`;
         }
-        return `font-semibold text-sky-600 dark:text-sky-500`;
+        return `font-semibold text-sky-600 dark:text-sky-400`;
       }
       if (props.color === 'red') {
         return `font-semibold text-rose-500 dark:text-rose-600`;
@@ -56,7 +56,7 @@ export default defineComponent({
         return `font-semibold text-sky-500 dark:text-sky-600`;
       }
 
-      return `font-semibold text-slate-400 dark:text-slate-600`;
+      return `font-semibold text-slate-700 dark:text-slate-400`;
     });
     //@ts-expect-error
     const updateValue = (e) => {
@@ -87,7 +87,7 @@ export default defineComponent({
 <template>
   <div class="flex flex-col w-full">
     <div
-      class="bg-white dark:bg-slate-900 text-sm h-[14px] whitespace-nowrap leading-none overflow-hidden"
+      class="bg-white dark:bg-slate-900 text-base whitespace-nowrap overflow-hidden"
       :class="getLabelClass"
     >
       {{ label }}
