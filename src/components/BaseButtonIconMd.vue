@@ -6,7 +6,7 @@ export type Colors = 'red' | 'green' | 'blue';
 export default defineComponent({
   props: {
     color: {
-      type: String,
+      type: String as () => Colors,
       default: 'blue',
     },
     type: {
