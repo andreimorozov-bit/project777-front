@@ -3,6 +3,8 @@ import { defineComponent, reactive } from 'vue';
 
 export type Colors = 'red' | 'green' | 'blue';
 
+export type Types = 'text' | 'outline' | 'filled';
+
 export default defineComponent({
   props: {
     color: {
@@ -10,7 +12,7 @@ export default defineComponent({
       default: 'blue',
     },
     type: {
-      type: String,
+      type: String as () => Types,
       default: 'outline',
     },
   },
