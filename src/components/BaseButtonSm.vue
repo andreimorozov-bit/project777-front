@@ -3,6 +3,8 @@ import { defineComponent, reactive } from 'vue';
 
 export type Colors = 'red' | 'green' | 'blue';
 
+export type Types = 'text' | 'outline' | 'filled';
+
 export enum Color {
   blue = 'blue',
   green = 'green',
@@ -12,11 +14,11 @@ export enum Color {
 export default defineComponent({
   props: {
     color: {
-      type: String,
+      type: String as () => Colors,
       default: 'blue',
     },
     type: {
-      type: String,
+      type: String as () => Types,
       default: 'text',
     },
   },

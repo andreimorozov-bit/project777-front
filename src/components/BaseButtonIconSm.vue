@@ -4,6 +4,8 @@ import type { PropType } from 'vue';
 
 export type Colors = 'red' | 'green' | 'blue';
 
+export type Types = 'text' | 'outline' | 'filled';
+
 export class Color {
   static blue = 'blue';
   static green = 'green';
@@ -13,11 +15,11 @@ export class Color {
 export default defineComponent({
   props: {
     color: {
-      type: String,
+      type: String as () => Colors,
       default: 'blue',
     },
     type: {
-      type: String,
+      type: String as () => Types,
       default: 'text',
     },
   },
