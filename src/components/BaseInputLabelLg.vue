@@ -1,6 +1,15 @@
 <script lang="ts">
 import { computed, defineComponent, reactive } from 'vue';
 
+// export enum Colors {
+//   red = 'red',
+//   blue = 'blue',
+//   green = 'green',
+//   gray = 'gray',
+// }
+
+export type Colors = 'red' | 'green' | 'blue' | 'gray';
+
 export default defineComponent({
   props: {
     label: {
@@ -8,8 +17,8 @@ export default defineComponent({
       default: 'label',
     },
     color: {
-      type: String,
-      default: 'gray',
+      type: String as () => Colors,
+      default: 'blue',
     },
     modelValue: {
       type: [String, Number],
@@ -19,44 +28,38 @@ export default defineComponent({
 
   setup(props, context) {
     const state = reactive({
-      focus: false,
+      status: 'normal',
       color: props.color,
     });
 
-    const getClass = (color: string) => {
-      if (color === 'red') {
-        return `border-rose-300 bg-rose-50 focus:border-rose-600 dark:bg-stone-900 dark:border-rose-900 dark:focus:border-rose-600`;
-      }
-      if (color === 'blue') {
-        return `border-sky-300 bg-sky-50 focus:border-sky-600 focus:bg-sky-100 dark:border-sky-800 dark:bg-slate-800  dark:focus:border-sky-500 `;
-      }
-      if (color === 'green') {
-        return `border-emerald-300 bg-emerald-100 focus:border-emerald-600 focus:bg-emerald-200  `;
-      }
-      return `border-slate-300 focus:border-sky-600 focus:bg-sky-100 dark:bg-slate-900 dark:border-slate-700 dark:focus:border-sky-500 dark:focus:bg-slate-800`;
+    const colors = {
+      red: `border-rose-300 bg-rose-50 focus:border-rose-600 dark:bg-stone-900 dark:border-rose-900 dark:focus:border-rose-600`,
+      blue: `border-slate-300 focus:border-sky-600 focus:bg-sky-100 dark:bg-slate-900 dark:border-slate-700 dark:focus:border-sky-500 dark:focus:bg-slate-800`,
+      green: `border-slate-300 focus:border-emerald-600 focus:bg-emerald-100 dark:border-slate-700 dark:bg-slate-900  dark:focus:border-emerald-500 dark:focus:bg-slate-800`,
+      gray: `border-slate-300 focus:border-sky-600 focus:bg-sky-100 dark:bg-slate-900 dark:border-slate-700 dark:focus:border-sky-900 dark:focus:bg-gray-900`,
+    };
+
+    const labelColors = {
+      active: {
+        red: `font-semibold text-rose-600 dark:text-rose-500`,
+        blue: `font-semibold text-sky-600 dark:text-sky-500`,
+        green: `font-semibold text-emerald-600 dark:text-emerald-500`,
+        gray: `font-semibold text-slate-400  dark:text-slate-600`,
+      },
+      normal: {
+        red: `font-semibold text-rose-500 dark:text-rose-600`,
+        blue: `font-semibold text-slate-700 dark:text-slate-400`,
+        green: `font-semibold text-slate-700 dark:text-slate-400`,
+        gray: `font-semibold text-slate-400  dark:text-slate-600`,
+      },
+    };
+
+    const getClass = (color: Colors) => {
+      return colors[color];
     };
 
     const getLabelClass = computed<string>(() => {
-      if (state.focus) {
-        if (props.color === 'red') {
-          return `font-semibold text-rose-600 dark:text-rose-500`;
-        }
-        if (props.color === 'green') {
-          return `font-semibold text-emerald-600`;
-        }
-        return `font-semibold text-sky-600 dark:text-sky-400`;
-      }
-      if (props.color === 'red') {
-        return `font-semibold text-rose-500 dark:text-rose-600`;
-      }
-      if (props.color === 'green') {
-        return `font-semibold text-emerald-500`;
-      }
-      if (props.color === 'blue') {
-        return `font-semibold text-sky-500 dark:text-sky-600`;
-      }
-
-      return `font-semibold text-slate-700 dark:text-slate-400`;
+      return labelColors[state.status as keyof typeof labelColors][props.color];
     });
     //@ts-expect-error
     const updateValue = (e) => {
@@ -64,12 +67,12 @@ export default defineComponent({
     };
     //@ts-expect-error
     const handleFocus = (e) => {
-      state.focus = true;
+      state.status = 'active';
       context.emit('focus');
     };
     //@ts-expect-error
     const handleBlur = (e) => {
-      state.focus = false;
+      state.status = 'normal';
       context.emit('blur');
     };
 

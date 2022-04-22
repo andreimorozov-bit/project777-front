@@ -6,6 +6,7 @@ import {
   reactive,
   ref,
   watch,
+  watchEffect,
 } from 'vue';
 import ChartPieItem from './ChartPieItem.vue';
 import BaseButtonMd from './BaseButtonMd.vue';
@@ -13,7 +14,6 @@ import BaseButtonSquare from './BaseButtonSquare.vue';
 import BaseButtonSm from './BaseButtonSm.vue';
 import { Close, Plus, Minus } from 'mdue';
 import BaseButtonIconSm from './BaseButtonIconSm.vue';
-import BaseButtonSelectMd from './BaseButtonSelectMd.vue';
 import ChartColumnItem from './ChartColumnItem.vue';
 import BaseButtonIconMd from './BaseButtonIconMd.vue';
 import BaseButtonIconXs from './BaseButtonIconXs.vue';
@@ -23,6 +23,12 @@ import ChartLineItem from './ChartLineItem.vue';
 import { useConfigStore } from '@/stores/config';
 import BaseInputLabelLg from './BaseInputLabelLg.vue';
 import { getChartColors } from '../common/chartColors';
+import BaseToggle from './BaseToggle.vue';
+
+export interface ChartData {
+  name: string;
+  data: number[];
+}
 
 export default defineComponent({
   components: {
@@ -34,7 +40,6 @@ export default defineComponent({
     Plus,
     Minus,
     BaseButtonIconSm,
-    BaseButtonSelectMd,
     ChartColumnItem,
     BaseButtonIconMd,
     BaseButtonIconXs,
@@ -42,6 +47,7 @@ export default defineComponent({
     BaseInputLabelMd,
     ChartLineItem,
     BaseInputLabelLg,
+    BaseToggle,
   },
   setup() {
     const state = reactive({
@@ -117,7 +123,22 @@ export default defineComponent({
           },
         ],
       },
+      chartData: [
+        {
+          name: 'Вальдемар',
+          data: [50, 40, 45, 10, 20, 10, 23, 27, 30, 21, 26, 32],
+        },
+        {
+          name: 'Джессика',
+          data: [30, 60, 70, 40, 30, 15, 19, 30, 35, 38, 40, 42],
+        },
+        {
+          name: 'Леонардо',
+          data: [20, 30, 50, 15, 40, 20, 26, 22, 21, 18, 15, 11],
+        },
+      ],
       darkMode: false,
+      cumulative: false,
       hovered: {
         category: -1,
         serie: -1,
@@ -153,23 +174,49 @@ export default defineComponent({
       }
     );
 
+    const getCumulativeChartData = (chartData: ChartData[]) => {
+      let newChartData = new Array(...chartData);
+
+      newChartData = newChartData.map((seriesItem, seriesIndex) => {
+        const newData = seriesItem.data.map((dataItem, dataIndex) => {
+          return seriesItem.data
+            .slice(0, dataIndex + 1)
+            .reduce((a, b) => a + b);
+        });
+
+        return {
+          name: seriesItem.name,
+          data: newData,
+        };
+      });
+
+      return newChartData;
+    };
+
+    watchEffect(() => {
+      if (state.cumulative) {
+        state.options.series = getCumulativeChartData(state.chartData);
+      } else {
+        state.options.series = state.chartData;
+      }
+      state.someKey += 1;
+    });
+
     const chartSerieAdd = () => {
       const newItem = {
-        name: `Сладкоежка ${state.options.series.length + 1}`,
+        name: `Сладкоежка ${state.chartData.length + 1}`,
         data: new Array<number>(state.options.xAxis.categories.length).fill(0),
         pointPlacement: 'on',
       };
-      state.options.series.push(newItem);
+      state.chartData.push(newItem);
     };
 
     const chartSerieDelete = (index: number) => {
-      state.options.series.splice(index, 1);
+      state.chartData.splice(index, 1);
     };
 
     const chartDataNameUpdate = (e: Event, index: number) => {
-      state.options.series[index].name = (
-        e.target as HTMLInputElement
-      ).value.trim();
+      state.chartData[index].name = (e.target as HTMLInputElement).value.trim();
     };
 
     const chartTitleChange = (e: Event) => {
@@ -191,7 +238,7 @@ export default defineComponent({
 
     const categoryDelete = (index: number) => {
       state.options.xAxis.categories.splice(index, 1);
-      state.options.series.map((serie, serieIndex) => {
+      state.chartData.map((serie, serieIndex) => {
         serie.data.splice(index, 1);
         return serie;
       });
@@ -296,7 +343,14 @@ export default defineComponent({
           />
         </div>
       </div>
-      <div class="flex flex-row p-2 md:p-4"></div>
+
+      <div class="flex flex-row flex-wrap">
+        <div class="p-2">
+          <BaseToggle v-model:checked="state.cumulative"
+            >Накопительно</BaseToggle
+          >
+        </div>
+      </div>
     </div>
     <div class="flex flex-col px-2 md:px-4">
       <div
@@ -311,6 +365,7 @@ export default defineComponent({
         >
           <div class="flex flex-row justify-end">
             <BaseButtonIconXs
+              color="red"
               @mouseover="categoryDeleteMouseOver(categoryIndex)"
               @mouseleave="categoryDeleteMouseLeave"
               @click="categoryDelete(categoryIndex)"
@@ -329,7 +384,7 @@ export default defineComponent({
         <div
           class="flex flex-row items-stretch text-center flex-none p-0.5 h-max w-20"
         >
-          <BaseButtonIconMd color="blue" type="filled" @click="categoryAdd">
+          <BaseButtonIconMd @click="categoryAdd">
             <Plus class="text-2xl" />
           </BaseButtonIconMd>
         </div>
@@ -339,7 +394,7 @@ export default defineComponent({
       class="flex flex-col flex-initial justify-start items-start p-2 md:p-4 w-auto"
     >
       <div
-        v-for="(serie, serieIndex) in state.options.series"
+        v-for="(serie, serieIndex) in state.chartData"
         :key="serie.name"
         class="flex flex-row flex-initial justify-start items-start w-auto"
       >
@@ -349,7 +404,7 @@ export default defineComponent({
           <div class="flex-auto min-w-[18rem] max-w-[24rem] px-0.5 pb-0.5 pt-4">
             <BaseInputMd
               :color="getColor(null, serieIndex)"
-              :value="state.options.series[serieIndex].name"
+              :value="state.chartData[serieIndex].name"
               @change="(e) => chartDataNameUpdate(e, serieIndex)"
               @focus="categoryFocus(null, serieIndex)"
               @blur="categoryBlur"
@@ -362,9 +417,7 @@ export default defineComponent({
             <BaseInputLabelMd
               :color="getColor(serieDataIndex, serieIndex)"
               :label="state.options.xAxis.categories[serieDataIndex]"
-              v-model.number="
-                state.options.series[serieIndex].data[serieDataIndex]
-              "
+              v-model.number="state.chartData[serieIndex].data[serieDataIndex]"
               @focus="categoryFocus(serieDataIndex, serieIndex)"
               @blur="categoryBlur"
             />
@@ -385,9 +438,9 @@ export default defineComponent({
         </div>
       </div>
       <div
-        class="flex flex-row flex-auto py-1 justify-start items-start min-w-[18rem]"
+        class="flex flex-row flex-auto py-1 justify-start items-start min-w-[18rem] p-0.5 pt-4"
       >
-        <BaseButtonIconMd color="blue" type="filled" @click="chartSerieAdd">
+        <BaseButtonIconMd @click="chartSerieAdd">
           <Plus class="text-2xl" />
         </BaseButtonIconMd>
       </div>

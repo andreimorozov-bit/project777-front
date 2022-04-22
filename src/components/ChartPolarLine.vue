@@ -6,7 +6,6 @@ import BaseButtonSquare from './BaseButtonSquare.vue';
 import BaseButtonSm from './BaseButtonSm.vue';
 import { Close, Plus, Minus } from 'mdue';
 import BaseButtonIconSm from './BaseButtonIconSm.vue';
-import BaseButtonSelectMd from './BaseButtonSelectMd.vue';
 import ChartColumnItem from './ChartColumnItem.vue';
 import BaseButtonIconMd from './BaseButtonIconMd.vue';
 import BaseButtonIconXs from './BaseButtonIconXs.vue';
@@ -27,7 +26,6 @@ export default defineComponent({
     Plus,
     Minus,
     BaseButtonIconSm,
-    BaseButtonSelectMd,
     ChartColumnItem,
     BaseButtonIconMd,
     BaseButtonIconXs,
@@ -273,6 +271,7 @@ export default defineComponent({
         >
           <div class="flex flex-row justify-end">
             <BaseButtonIconXs
+              color="red"
               @mouseover="categoryDeleteMouseOver(categoryIndex)"
               @mouseleave="categoryDeleteMouseLeave"
               @click="categoryDelete(categoryIndex)"
@@ -291,7 +290,7 @@ export default defineComponent({
         <div
           class="flex flex-row items-stretch text-center flex-none p-0.5 h-max w-20"
         >
-          <BaseButtonIconMd color="blue" type="filled" @click="categoryAdd">
+          <BaseButtonIconMd @click="categoryAdd">
             <Plus class="text-2xl" />
           </BaseButtonIconMd>
         </div>
@@ -339,7 +338,6 @@ export default defineComponent({
               @mouseleave="serieDeleteMouseLeave"
               @click="chartSerieDelete(serieIndex)"
               color="red"
-              type="text"
             >
               <Close class="text-xl" />
             </BaseButtonIconSm>
@@ -347,9 +345,9 @@ export default defineComponent({
         </div>
       </div>
       <div
-        class="flex flex-row flex-auto py-1 justify-start items-start min-w-[18rem]"
+        class="flex flex-row flex-auto py-1 justify-start items-start min-w-[18rem] p-0.5 pt-4"
       >
-        <BaseButtonIconMd color="blue" type="filled" @click="chartSerieAdd">
+        <BaseButtonIconMd @click="chartSerieAdd">
           <Plus class="text-2xl" />
         </BaseButtonIconMd>
       </div>

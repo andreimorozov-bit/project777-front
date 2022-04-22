@@ -6,8 +6,8 @@ export const getChartColors = (options, dark: boolean) => {
     options.title.style = { color: '#94a3b8' };
     options.colors = [
       '#485fee',
-      '#ee3222',
-      '#90ed7d',
+      '#ee2232',
+      '#22c55e',
       '#f7a35c',
       '#8085e9',
       '#f15c80',

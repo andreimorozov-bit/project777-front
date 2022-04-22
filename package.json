@@ -8,6 +8,7 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@vueform/toggle": "^2.0.1",
     "highcharts": "^10.0.0",
     "highcharts-vue": "^1.4.0",
     "mdue": "^0.1.4",
