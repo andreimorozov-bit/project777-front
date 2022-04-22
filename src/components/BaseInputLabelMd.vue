@@ -54,7 +54,7 @@ export default defineComponent({
       },
     };
 
-    const getClass = (color: Colors) => {
+    const getClass = (color: keyof typeof colors) => {
       return colors[color];
     };
 

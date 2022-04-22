@@ -44,7 +44,10 @@ export default defineComponent({
       },
     };
 
-    const getStyles = (color: Colors, type: keyof typeof colors) => {
+    const getStyles = (
+      color: keyof typeof colors.text,
+      type: keyof typeof colors
+    ) => {
       return colors[type][color];
     };
 

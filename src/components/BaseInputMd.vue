@@ -30,7 +30,7 @@ export default defineComponent({
       gray: `border-slate-300 focus:border-sky-600 focus:bg-sky-100 dark:text-slate-400 dark:bg-slate-900 dark:border-slate-700 dark:focus:border-sky-500 dark:focus:text-slate-300 dark:focus:bg-slate-800`,
     };
 
-    const getClass = (color: Colors) => {
+    const getClass = (color: keyof typeof colors) => {
       return colors[color];
     };
 
