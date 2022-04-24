@@ -30,9 +30,9 @@ export default defineComponent({
 
     const colors = {
       text: {
-        red: `text-slate-400 border border-white bg-white hover:bg-slate-100 hover:text-rose-500 hover:border-slate-100 dark:text-slate-500 dark:bg-slate-900 dark:border-slate-900 dark:hover:text-rose-500 dark:hover:bg-slate-800 dark:hover:border-slate-800`,
-        blue: `text-slate-400 border border-white bg-white hover:bg-slate-100 hover:text-sky-500 hover:border-slate-100 dark:text-slate-500 dark:bg-slate-900 dark:border-slate-900 dark:hover:text-sky-500 dark:hover:bg-slate-800 dark:hover:border-slate-800`,
-        green: `text-slate-400 border border-white bg-white hover:bg-slate-100 hover:text-emerald-500 hover:border-slate-100 dark:text-slate-500 dark:bg-slate-900 dark:border-slate-900 dark:hover:text-emerald-500 dark:hover:bg-slate-800 dark:hover:border-slate-800`,
+        red: `text-slate-400 border border-white bg-white hover:bg-slate-100 hover:text-rose-500 hover:border-slate-100 dark:text-slate-500 dark:bg-transparent dark:border-transparent dark:hover:text-rose-500 dark:hover:bg-slate-700 dark:hover:border-slate-700`,
+        blue: `text-slate-400 border border-transparent bg-transparent hover:bg-slate-100 hover:text-sky-500 hover:border-slate-100 dark:text-slate-500 dark:bg-transparent dark:border-transparent dark:hover:text-sky-500 dark:hover:bg-slate-700 dark:hover:border-slate-700`,
+        green: `text-slate-400 border border-white bg-white hover:bg-slate-100 hover:text-emerald-500 hover:border-slate-100 dark:text-slate-500 dark:bg-slate-900 dark:border-slate-900 dark:hover:text-emerald-500 dark:hover:bg-slate-700 dark:hover:border-slate-700`,
       },
       outline: {
         red: `text-slate-400 border border-slate-300 bg-white hover:bg-rose-100 hover:text-rose-500 hover:border-rose-400 dark:bg-slate-900 dark:text-slate-500 dark:border-slate-700 dark:hover:border-rose-500 dark:hover:bg-slate-800 dark:hover:text-rose-500`,

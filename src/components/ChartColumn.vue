@@ -264,7 +264,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="flex flex-col w-full text-slate-700">
+  <div class="flex flex-col w-full text-slate-700 dark:text-slate-400">
     <div class="flex flex-col lg:flex-row flex-auto w-full">
       <div
         class="flex flex-col flex-auto p-2 md:p-4 w-full lg:w-5/12 max-w-[30rem]"

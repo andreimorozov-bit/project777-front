@@ -173,8 +173,6 @@ export default defineComponent({
     );
 
     watchEffect(() => {
-      console.log(state.sortData);
-      console.log(state.chartData);
       state.options.series[0].data = sortChartData(
         state.chartData,
         state.sortData

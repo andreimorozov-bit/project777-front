@@ -72,6 +72,12 @@ export interface LegendInterface {
   };
 }
 
+export interface TooltipInterface {
+  shared?: boolean;
+  crosshairs?: boolean;
+  pointFormat?: string;
+}
+
 export interface PlotOptionsinterface {
   pie?: {
     allowPointSelect?: boolean;
@@ -102,6 +108,7 @@ export interface OptionsInterface {
   legend: LegendInterface;
   colors: string[];
   title: TitleInterface;
+  tooltip: TooltipInterface;
   xAxis: XAxisInterface;
   yAxis: YAxisInterface;
   plotOptions: PlotOptionsinterface;
@@ -132,6 +139,7 @@ export default defineComponent({
           },
         },
         legend: props.options?.legend,
+        tooltip: props.options?.tooltip,
         series: props.options?.series,
       },
       someKey: 1,

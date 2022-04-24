@@ -1,5 +1,14 @@
 <script lang="ts">
-import { computed, defineComponent, reactive } from 'vue';
+import {
+  computed,
+  defineComponent,
+  onBeforeMount,
+  onBeforeUnmount,
+  onMounted,
+  onUnmounted,
+  reactive,
+  watchEffect,
+} from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { WhiteBalanceSunny, MoonWaningCrescent } from 'mdue';
 import BaseButtonIconMd from './components/BaseButtonIconMd.vue';
@@ -22,10 +31,35 @@ export default defineComponent({
 
     const toggleDarkMode = () => {
       configStore.toggleDark();
+      localStorage.setItem('theme', configStore.dark ? 'dark' : 'light');
     };
 
     const darkMode = computed(() => {
       return configStore.dark ? 'dark' : '';
+    });
+
+    // onMounted(() => {
+    //   const theme = localStorage.getItem('theme');
+    //   console.log(theme);
+    //   if (theme === 'dark') {
+    //     configStore.dark = true;
+    //     return;
+    //   }
+    //   if (theme === 'light') {
+    //     configStore.dark = false;
+    //     return;
+    //   }
+    // });
+
+    watchEffect(() => {
+      const theme = localStorage.getItem('theme');
+      if (theme === 'dark') {
+        configStore.dark = true;
+      }
+      if (theme === 'light') {
+        configStore.dark = false;
+      }
+      localStorage.setItem('theme', configStore.dark ? 'dark' : 'light');
     });
 
     return {
@@ -40,7 +74,7 @@ export default defineComponent({
 
 <template>
   <div :class="darkMode">
-    <div class="bg-white dark:bg-slate-900">
+    <div class="bg-white dark:bg-slate-800">
       <div class="min-h-screen flex flex-col w-full 2xl:w-11/12 mx-auto">
         <header class="flex flex-row justify-between">
           <nav class="flex flex-row">

@@ -74,8 +74,9 @@ export default defineComponent({
         },
         tooltip: {
           shared: true,
-          pointFormat:
-            '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>',
+          crosshairs: true,
+          // pointFormat:
+          //   '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>',
         },
         legend: {
           align: 'center',
@@ -326,7 +327,7 @@ export default defineComponent({
   <div class="flex flex-col w-full text-slate-700 dark:text-slate-400">
     <div class="flex flex-col lg:flex-row flex-auto w-full">
       <div
-        class="flex flex-col flex-auto p-2 md:p-4 w-full lg:w-5/12 max-w-[30rem]"
+        class="flex flex-col flex-auto p-2 md:p-4 w-full lg:w-5/12 max-w-[30rem] dark:bg-slate-800"
       >
         <div class="flex flex-col items-start my-2">
           <div class="flex-auto w-full min-w-[18rem] max-w-[34rem]">
@@ -391,7 +392,7 @@ export default defineComponent({
       </div>
     </div>
     <div
-      class="flex flex-col flex-initial justify-start items-start p-2 md:p-4 w-auto"
+      class="flex flex-col flex-initial justify-start items-start p-2 md:p-4 w-auto dark:bg-slate-800"
     >
       <div
         v-for="(serie, serieIndex) in state.chartData"

@@ -34,9 +34,9 @@ export default defineComponent({
 
     const colors = {
       red: `border-rose-300 bg-rose-50 focus:border-rose-600 dark:bg-stone-900 dark:border-rose-900 dark:focus:border-rose-600`,
-      blue: `border-slate-300 focus:border-sky-600 focus:bg-sky-100 dark:bg-slate-900 dark:border-slate-700 dark:focus:border-sky-500 dark:focus:bg-slate-800`,
-      green: `border-slate-300 focus:border-emerald-600 focus:bg-emerald-100 dark:border-slate-700 dark:bg-slate-900  dark:focus:border-emerald-500 dark:focus:bg-slate-800`,
-      gray: `border-slate-300 focus:border-sky-600 focus:bg-sky-100 dark:bg-slate-900 dark:border-slate-700 dark:focus:border-sky-900 dark:focus:bg-gray-900`,
+      blue: `border-slate-300 focus:border-sky-600 focus:bg-sky-100 dark:bg-transparent dark:border-slate-700 dark:focus:border-sky-500 dark:focus:bg-slate-900`,
+      green: `border-slate-300 focus:border-emerald-600 focus:bg-emerald-100 dark:border-slate-700 dark:bg-transparent dark:focus:border-emerald-500 dark:focus:bg-slate-900`,
+      gray: `border-slate-300 focus:border-sky-600 focus:bg-sky-100 dark:bg-transparent dark:border-slate-700 dark:focus:border-sky-900 dark:focus:bg-slate-900`,
     };
 
     const labelColors = {
@@ -90,7 +90,7 @@ export default defineComponent({
 <template>
   <div class="flex flex-col w-full">
     <div
-      class="bg-white dark:bg-slate-900 text-base whitespace-nowrap overflow-hidden"
+      class="bg-transparent text-base whitespace-nowrap overflow-hidden"
       :class="getLabelClass"
     >
       {{ label }}
@@ -102,7 +102,7 @@ export default defineComponent({
         @input="updateValue"
         @focus="handleFocus"
         @blur="handleBlur"
-        class="w-full text-slate-700 focus:text-slate-900 dark:text-slate-400 dark:focus:text-slate-300 px-1 py-1 rounded border focus:outline-none"
+        class="w-full text-slate-700 focus:text-slate-900 dark:text-slate-400 dark:focus:text-slate-400 px-1 py-1 rounded border focus:outline-none"
         :class="getClass(color)"
       />
     </div>

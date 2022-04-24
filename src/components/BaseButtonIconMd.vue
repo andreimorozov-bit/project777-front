@@ -24,9 +24,9 @@ export default defineComponent({
         green: `text-slate-400 border border-white bg-white hover:bg-slate-100 hover:text-emerald-500 hover:border-slate-100 dark:text-slate-500 dark:bg-slate-900 dark:border-slate-900 dark:hover:text-emerald-500 dark:hover:bg-slate-800 dark:hover:border-slate-800`,
       },
       outline: {
-        red: `text-slate-400 border border-slate-300 bg-white hover:bg-rose-100 hover:text-rose-500 hover:border-rose-400 dark:bg-slate-900 dark:text-slate-500 dark:border-slate-700 dark:hover:border-rose-500 dark:hover:bg-slate-800 dark:hover:text-rose-500`,
-        blue: `text-slate-400 border border-slate-300 bg-white hover:bg-sky-100 hover:text-sky-500 hover:border-sky-300 dark:bg-slate-900 dark:text-slate-500 dark:border-slate-700 dark:hover:border-sky-500 dark:hover:bg-slate-800 dark:hover:text-sky-500`,
-        green: `text-slate-400 border border-slate-300 bg-white hover:bg-emerald-100 hover:text-emerald-500 hover:border-emerald-300 dark:bg-slate-900 dark:text-slate-500 dark:border-slate-700 dark:hover:border-emerald-500 dark:hover:bg-slate-800 dark:hover:text-emerald-500`,
+        red: `text-slate-400 border border-slate-300 bg-transparent hover:bg-rose-100 hover:text-rose-500 hover:border-rose-400 dark:bg-transparent dark:text-slate-500 dark:border-slate-700 dark:hover:border-rose-500 dark:hover:bg-transparent dark:hover:text-rose-500`,
+        blue: `text-slate-400 border border-slate-300 bg-transparent hover:bg-sky-100 hover:text-sky-500 hover:border-sky-300 dark:bg-transparent dark:text-slate-500 dark:border-slate-700 dark:hover:border-sky-500 dark:hover:bg-transparent dark:hover:text-sky-500`,
+        green: `text-slate-400 border border-slate-300 bg-transparent hover:bg-emerald-100 hover:text-emerald-500 hover:border-emerald-300 dark:bg-transparent dark:text-slate-500 dark:border-slate-700 dark:hover:border-emerald-500 dark:hover:bg-transparent dark:hover:text-emerald-500`,
       },
       filled: {
         red: `text-white border border-rose-500 bg-rose-500 hover:bg-rose-400 hover:border-rose-400 dark:bg-rose-600 dark:border-rose-600 dark:text-slate-900 dark:hover:bg-rose-500 dark:hover:border-rose-500`,
