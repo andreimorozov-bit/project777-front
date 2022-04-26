@@ -184,27 +184,15 @@ export default defineComponent({
         name: `Сладкоежка ${state.options.series[0].data.length + 1}`,
         y: 0,
       };
-      state.options.series[0].data.push(newItem);
+      state.chartData.push(newItem);
     };
 
     const chartDataDelete = (index: number) => {
-      state.options.series[0].data.splice(index, 1);
-    };
-
-    const chartValueIncrement = (index: number) => {
-      state.options.series[0].data[index].y++;
-    };
-
-    const chartValueDecrement = (index: number) => {
-      if (state.options.series[0].data[index].y > 0) {
-        state.options.series[0].data[index].y--;
-      }
+      state.chartData.splice(index, 1);
     };
 
     const chartDataNameUpdate = (e: Event, index: number) => {
-      state.options.series[0].data[index].name = (
-        e.target as HTMLInputElement
-      ).value.trim();
+      state.chartData[index].name = (e.target as HTMLInputElement).value.trim();
     };
 
     const chartTitleChange = (e: Event) => {
@@ -274,8 +262,6 @@ export default defineComponent({
 
     return {
       state,
-      chartValueIncrement,
-      chartValueDecrement,
       chartDataNameUpdate,
       chartDataAdd,
       chartDataDelete,

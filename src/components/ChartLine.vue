@@ -232,8 +232,8 @@ export default defineComponent({
 
     const categoryAdd = () => {
       state.options.xAxis.categories.push('');
-      for (let i = 0; i < state.options.series.length; i++) {
-        state.options.series[i].data.push(0);
+      for (let i = 0; i < state.chartData.length; i++) {
+        state.chartData[i].data.push(0);
       }
     };
 
