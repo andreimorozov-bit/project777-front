@@ -45,7 +45,7 @@ export default defineComponent({
     const state = reactive({
       options: {
         title: {
-          text: 'Всего съедено булочек',
+          text: 'Булочек съедено всего',
         },
         colors: [
           '#7cb5ec',
